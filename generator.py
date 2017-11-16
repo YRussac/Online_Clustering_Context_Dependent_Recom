@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-%matplotlib inline
 from sklearn.datasets import make_classification
 
 def generate_data(T, n, d, n_class = 4, class_sep = 10, n_redundant = 0, weights = None):
