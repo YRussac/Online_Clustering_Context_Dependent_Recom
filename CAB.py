@@ -6,21 +6,21 @@ from generator import generate_data
 
 def Context_Aware_Clustering_of_Bandits(gamma, alpha, d, n, T):
     '''
-
-    :param gamma:
-    :param alpha:
-    :param d:
-    :param n:
-    :param T:
+    Implementation of the CAB algorithm presented in On Context-Dependent Clustering of Bandits
+    :param gamma: the gap parameter: int
+    :param alpha: list of length n, parameter used to calculate the standard confident bound (CB) for different users
+    for the different periods. This parameter is called exploration parameter: list
+    :param d: dimension of the context vectors: int
+    :param n: number of different users: int
+    :param T: number of period for the algorithm: int
     :return:
     '''
-
     b_list = [np.matrix(np.zeros(d)).T for i in range(n)]
-    M_list = [np.eye(d) for i in range(n)]
+    M_list = [np.eye(d) for i in range(n)]  # Initialisation as the identity matrix for every user
     generation_tot = generate_data(T=T, n=n, d=d)
     data_generation = generation_tot[1]
     users_info = generation_tot[0]
-    CB= np.zeros((n, d))  # matrix i: user j: numero de l'item
+    CB = np.zeros((n, d))  # Row corresponding to users and columns to the items
     for t in range(T):
         # filling the CB Matrix
         for i in range(n):
