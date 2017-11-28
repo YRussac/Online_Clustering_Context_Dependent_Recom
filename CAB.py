@@ -15,7 +15,7 @@ def Context_Aware_Clustering_of_Bandits(gamma, alpha, d, n, T):
     :param T: number of period for the algorithm: int
     :return:
     '''
-    b_list = [np.matrix(np.zeros(d)).T for i in range(n)]
+    b_list = [np.matrix(np.zeros(d)).T for i in range(n)] # Initialisation as a 0 column vector for every user
     M_list = [np.eye(d) for i in range(n)]  # Initialisation as the identity matrix for every user
     generation_tot = generate_data(T=T, n=n, d=d)
     data_generation = generation_tot[1]
