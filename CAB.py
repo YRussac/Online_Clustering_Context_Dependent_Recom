@@ -45,10 +45,8 @@ def Context_Aware_Clustering_of_Bandits(gamma, alpha, d, n, T):
                 if j != i_t:
                     if abs(w_list[i_t].T*C_t[:, k] - w_list[j].T*C_t[:, k])[0, 0] <= CB[i_t, num_item] + CB[j, num_item]:
                             neigh_k_it.append(j)
-            sum_calc = sum([w_list[neigh] for neigh in neigh_k_it])
-            sum_calc_CB = sum([CB[j, num_item] for j in neigh_k_it])
-            w_dico_N_K[num_item] = sum_calc/len(neigh_k_it)
-            CB_dico_N_K[num_item] = sum_calc_CB/len(neigh_k_it)
+            w_dico_N_K[num_item] = sum([w_list[neigh] for neigh in neigh_k_it])/len(neigh_k_it)
+            CB_dico_N_K[num_item] = sum([CB[j, num_item] for j in neigh_k_it])/len(neigh_k_it)
             dico_t[num_item] = neigh_k_it
         # Part for the item recommendation
         maxi = - math.inf
