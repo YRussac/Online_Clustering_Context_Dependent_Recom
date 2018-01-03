@@ -98,4 +98,5 @@ def generate_data(T, n_users, n_products, d, method_users = 'blobs', method_prod
         item_available = np.random.choice(n_products, context_len, replace=False)
         output += [[i, item_available]]
 
-    return [np.matrix(users), np.matrix(products), output]
+
+    return [users, products, output]
