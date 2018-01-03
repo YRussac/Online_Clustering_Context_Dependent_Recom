@@ -1,7 +1,7 @@
 def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param = None,
                 n_class_users = 4, bound = 3, payoff_noise = 0.001,
                 method_users = 'blobs', method_products= 'blobs',
-                n_class_products = None, n_class_users = 4, context_len = 3,
+                n_class_products = None, context_len = 3,
                 users_cluster_param = 0.05, products_cluster_param = 0.01):
     '''
     Implementation of the CAB algorithm presented in On Context-Dependent Clustering of Bandits
