@@ -1,9 +1,10 @@
 def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param = None,
-                n_class_users = 4, bound = 3, payoff_noise = 0.001,
+                n_class_users = 4, payoff_noise = 0.001,
                 method_users = 'blobs', method_products= 'blobs',
                 n_class_products = None, context_len = 3,
                 users_cluster_param = 0.05, products_cluster_param = 0.01):
     '''
+
     Implementation of the CAB algorithm presented in On Context-Dependent Clustering of Bandits
     INPUT:
     T : number of time step : int
@@ -21,7 +22,7 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
                         - emb_noise : noise of the historical data
                         - plt_emb : whether to plot the SC or not
     n_class_users : number of underlying user clusters
-    bound : number of item available at each timestep
+    context_len : number of item available at each timestep
     payoff_noise : std for the noise of the payoff_noise
 
     OUTPUT: a list of:
