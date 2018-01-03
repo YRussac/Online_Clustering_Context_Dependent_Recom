@@ -1,5 +1,33 @@
 
 
+def monitor_result(ans):
+    '''
+
+    This function take the CAB or CLUB as an argument to plot main results
+
+    '''
+    f, ax = plt.subplots(2, 2, figsize=(30,15))
+    ax[0,0].plot(np.cumsum(np.array(out[2])), c='r', linewidth=2)
+    ax[0,0].grid()
+    ax[0,0].set_title('Cumulated regret')
+    ax[0,1].plot(np.cumsum(np.array(out[2]) == 0)/np.arange(1,T+1), linewidth=2)
+    ax[0,1].grid()
+    ax[0,1].set_title('Proportion of perfect choices')
+    ax[1,0].plot(out[6], c='g', linewidth=0.1)
+    ax[1,0].grid()
+    ax[1,0].set_title('Size of estimated neighborhood')
+    ax[1,1].plot(out[5], c='g', linewidth=0.1)
+    ax[1,1].grid()
+    ax[1,1].set_title('Number of updated neighbors')
+
+
+def three_D_eye_matrix(dim1,dim2):
+    res = np.zeros((dim1,dim2,dim2))
+    for i in range(dim1):
+        res[i] = np.eye(dim2,dim2)
+    return res
+
+
 def build_similarity(M, sigma, fun='gauss'):
     '''
     This function build the simiarity matrix between the columns of M according to some distance

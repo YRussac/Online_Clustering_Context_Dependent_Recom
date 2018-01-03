@@ -1,12 +1,3 @@
-import numpy as np
-import math
-from numpy.linalg import inv
-
-def three_D_eye_matrix(dim1,dim2):
-    res = np.zeros((dim1,dim2,dim2))
-    for i in range(dim1):
-        res[i] = np.eye(dim2,dim2)
-    return res
 
 def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param = None,
                 n_class_users = 4, payoff_noise = 0.001,
@@ -91,7 +82,7 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
             print('tour n° ' + str(t))
             print("##################")
 
-        for i in range(n):
+        for i in range(n_users):
             w_matrix[i] = inv(M_matrix[i]) @ b_matrix[i] #update the user's proxy
 
         #We receive user and context
@@ -108,7 +99,7 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
             neigh_k_it = []
 
             # Creation of the neighborhood for each item
-            for j in range(n):
+            for j in range(n_users):
                 CB[j, num_item] = alpha[t]*math.sqrt(products[num_item,:] @ inv(M_matrix[j]) @ products[num_item,:].T)
                 if abs(w_matrix[i_t].T @ products[num_item,:] - w_matrix[j].T @ products[num_item,:])[0] <= CB[i_t, num_item] + CB[j, num_item]:
                         neigh_k_it.append(j)
