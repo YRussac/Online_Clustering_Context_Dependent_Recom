@@ -8,7 +8,7 @@ def sample_spherical(npoints, ndim=3):
     return vec
 
 
-def generate_data(T, n_users, n_products, d, method_users = 'blobs', method_products= 'blobs',
+def generate_data(T, n_users, n_products, d, method_users = 'blobs', method_products= 'One-Hot',
                   n_class_products = None, n_class_users = 4, context_len = 3,
                   users_cluster_param = 0.05, products_cluster_param = 0.01):
     '''
