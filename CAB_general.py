@@ -1,5 +1,8 @@
 def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param = None,
-                                                n_class_users = 4, bound = 3, payoff_noise = 0.001, verbose=False):
+                n_class_users = 4, bound = 3, payoff_noise = 0.001,
+                method_users = 'blobs', method_products= 'blobs',
+                n_class_products = None, n_class_users = 4, context_len = 3,
+                users_cluster_param = 0.05, products_cluster_param = 0.01):
     '''
     Implementation of the CAB algorithm presented in On Context-Dependent Clustering of Bandits
     INPUT:
@@ -10,11 +13,16 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
     n_products : number of existing products
     d_large : dimension of the user representation
     embedding_param : if None: regular CAB is performed.
-                    If list [number of hidden class of products, size of the embedding], an embedded CAB is performed
+                    If list, an embedded CAB is performed, in the list:
+                        - n_class_products : number of underlying clusters for products
+                        - d_reduced : size of the embeddings
+                        - T_historical : duration of historical data
+                        - context_emb : size of the context for historical data
+                        - emb_noise : noise of the historical data
+                        - plt_emb : whether to plot the SC or not
     n_class_users : number of underlying user clusters
     bound : number of item available at each timestep
     payoff_noise : std for the noise of the payoff_noise
-    verbose : whether to monitor the algorithm or not
 
     OUTPUT: a list of:
     users_matrix : matrix of the users
@@ -41,18 +49,22 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
 
     # We generate all the data for the experiment
     if embedding_param:
-        n_class_products, d_reduced = embedding_param
+        n_class_products, d_reduced, T_historical, context_emb, emb_noise, plot_emb = embedding_param
         b_matrix = np.zeros(shape = (n,d_reduced,1))
         M_matrix = three_D_eye_matrix(n,d_reduced)
-        generation_data = generate_embedded_data(T, n_users, n_products, d_large, n_class_products, d_reduced, n_class_users = 4, context_len = 3)
-        (users_matrix, data_generation, products, original) = (generation_data[0], generation_data[1], generation_data[2],generation_data[3])
+        generation_data = generate_embedded_data(T, T_historical, n_users, n_products, d, d_reduced, method_users, method_products,
+                          n_class_products, n_class_users, context_len, context_emb, emb_noise,
+                          plot_emb, users_cluster_param, products_cluster_param )
+        (users_matrix, products, original, data_generation) = (generation_data[0], generation_data[1], generation_data[2],generation_data[3])
         w_matrix = np.zeros(shape = (n,d_reduced,1))
 
     else:
         b_matrix = np.zeros(shape = (n,d_large,1))
         M_matrix = three_D_eye_matrix(n,d_large)
-        generation_data = generate_data(T, n_users, n_products, d_large, n_class_products, n_class_users = 4, context_len = 3)
-        (users_matrix, data_generation, products) = (generation_data[0], generation_data[1], generation_data[2])
+        generation_data = generate_data(T, n_users, n_products, d_large, method_users, method_products,
+                          n_class_products, n_class_users, context_len,
+                          users_cluster_param, products_cluster_param)
+        (users_matrix, products,  data_generation) = (generation_data[0], generation_data[1], generation_data[2])
         original = products
         w_matrix = np.zeros(shape = (n,d_large,1))
 
@@ -65,9 +77,7 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
     for t in range(T):
         if t%500 ==0 :
             print("##################")
-            print("##################")
             print('tour n° ' + str(t))
-            print("##################")
             print("##################")
 
         for i in range(n):
@@ -126,5 +136,5 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
                     b_matrix[neigh] = b_matrix[neigh] + y_t*products[C_t[indice_contexte],:][:,np.newaxis]
                     up += 1
             updates += [up]
-            
+
     return [users_matrix, w_matrix, regret, choices, best_choices, updates, neighbors_story]
