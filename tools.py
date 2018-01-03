@@ -1,6 +1,4 @@
-
-
-def monitor_result(ans):
+def monitor_result(out):
     '''
 
     This function take the CAB or CLUB as an argument to plot main results

@@ -1,4 +1,5 @@
 
+
 def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param = None,
                 n_class_users = 4, payoff_noise = 0.001,
                 method_users = 'blobs', method_products= 'blobs',
@@ -51,13 +52,14 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
 
     # We generate all the data for the experiment
     if embedding_param:
+        print('creation of embeddings ... ')
         n_class_products, d_reduced, T_historical, context_emb, emb_noise, plot_emb = embedding_param
         b_matrix = np.zeros(shape = (n_users,d_reduced,1))
         M_matrix = three_D_eye_matrix(n_users,d_reduced)
         generation_data = generate_embedded_data(T, T_historical, n_users, n_products, d, d_reduced, method_users, method_products,
                           n_class_products, n_class_users, context_len, context_emb, emb_noise,
                           plot_emb, users_cluster_param, products_cluster_param )
-        (users_matrix, products, original, data_generation) = (generation_data[0], generation_data[1], generation_data[2],generation_data[3])
+        (users_matrix, products, original, data_generation) = (generation_data[0], generation_data[2], generation_data[1],generation_data[3])
         w_matrix = np.zeros(shape = (n_users,d_reduced,1))
 
     else:
@@ -105,10 +107,9 @@ def CAB_general(T, gamma, alpha, n_users, n_products, d_large, embedding_param =
                         neigh_k_it.append(j)
 
             w = sum([w_matrix[neigh] for neigh in neigh_k_it])/len(neigh_k_it) #average proxy
-            CB = sum([CB[j, num_item] for j in neigh_k_it])/len(neigh_k_it) #average CB
+            CB_k = sum([CB[j, num_item] for j in neigh_k_it])/len(neigh_k_it) #average CB
             dico_t[num_item] = neigh_k_it #estimated neighborhood
-            expected_reward += [(w.T @ products[num_item,:]+ CB)[0]]
-
+            expected_reward += [(w.T @ products[num_item,:]+ CB_k)[0]]
             neighbors_story += [len(neigh_k_it)]
 
         # Part for the item recommendation

@@ -1,6 +1,8 @@
-import numpy as np
-from sklearn.datasets import make_classification, make_blobs
-from tools import SC
+
+
+
+
+
 
 def sample_spherical(npoints, ndim=3):
     vec = np.random.randn(ndim, npoints)
@@ -105,10 +107,9 @@ def generate_embedded_data(T, T_historical, n_users, n_products, d, d_reduced, m
     for t in range(T_historical):
         i = np.random.randint(0, n_users)
         user_selected = users[i,:]
-        item_number = np.random.randint(1,d)
         idx = np.random.choice(d, context_emb, replace=False)
         items_available = products[idx,:]
-        item_chosen = np.argmax(user_selected @ items_available.T + np.random.normal(0, emb_noise,(1,bound)))
+        item_chosen = np.argmax(user_selected @ items_available.T + np.random.normal(0, emb_noise,(1, context_emb)))
         item_chosen = idx[item_chosen]
         hist_mat[item_chosen,i] += 1
 
