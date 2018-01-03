@@ -48,6 +48,7 @@ def CLUB_general(T, alpha, alpha_2, n_users, n_products, d_large, embedding_para
     occurence_users = [0]*n_users
     cluster_dico = {}
     cluster_dico[0] = [i for i in range(n_users)]
+    m_t_list = [1]
 
     if embedding_param:
         n_class_products, d_reduced, T_historical, context_emb, emb_noise, plot_emb = embedding_param
@@ -89,15 +90,17 @@ def CLUB_general(T, alpha, alpha_2, n_users, n_products, d_large, embedding_para
             j_t = 0
         else:
             j_t = cluster_indices[i_t]  # cluster to which i_t belongs
-        M_mean = np.zeros(shape=(n_products, n_products))
-        b_mean = np.zeros(shape=(n_products, 1))
+
+
+        M_mean = np.zeros(M_matrix[0].shape)
+        b_mean = np.zeros(b_matrix[0].shape)
 
         for indice in cluster_dico[j_t]:
-            M_mean += M_matrix[indice] - np.eye(n_products, n_products)
+            M_mean += M_matrix[indice] - np.eye(M_mean.shape[0])
             b_mean += b_matrix[indice]
 
-        M_mean = M_mean + np.eye(n_products, n_products)
-        w_mean = inv(M_mean)@b_mean
+        M_mean = M_mean + np.eye(M_mean.shape[0])
+        w_mean = inv(M_mean) @ b_mean
 
         maxi = - math.inf
         indice_contexte = 0
@@ -144,6 +147,7 @@ def CLUB_general(T, alpha, alpha_2, n_users, n_products, d_large, embedding_para
         for nb_cluster, cluster_member in enumerate(connected_comp):
             cluster_dico[nb_cluster] = cluster_member
         m_t = len(list(cluster_dico.keys()))
+        m_t_list.append(m_t)
         cluster_indices = {}
         for i in range(len(cluster_dico.keys())):
             l = cluster_dico[i]
@@ -152,4 +156,4 @@ def CLUB_general(T, alpha, alpha_2, n_users, n_products, d_large, embedding_para
 
         occurence_users[i_t] += 1
 
-    return [users_matrix, w_matrix, regret, choices, best_choices, cluster_dico]
+    return [users_matrix, w_matrix, regret, choices, best_choices, cluster_dico,m_t_list]
