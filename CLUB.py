@@ -2,8 +2,8 @@ def CLUB_general(T, alpha, alpha_2, n_users, n_products, d_large, embedding_para
                  n_class_users = 4, n_class_products = None, context_len = 3,
                  payoff_noise = 0.001, users_cluster_param = 0.05,
                  products_cluster_param = 0.01, method_users = 'blobs',
-                 method_products= 'One-Hot',
-                 ):
+                 method_products= 'One-Hot', seed=None):
+
     '''
     Implementation of the CLUB algorithm presented in Online Clustering of Bandits (Gentille & al.)
 
@@ -56,7 +56,7 @@ def CLUB_general(T, alpha, alpha_2, n_users, n_products, d_large, embedding_para
         M_matrix = three_D_eye_matrix(n_users, d_reduced)
         generation_data = generate_embedded_data(T, T_historical, n_users, n_products, d, d_reduced, method_users, method_products,
                           n_class_products, n_class_users, context_len, context_emb, emb_noise,
-                          plot_emb, users_cluster_param, products_cluster_param )
+                          plot_emb, users_cluster_param, products_cluster_param, seed )
         (users_matrix, original, products, data_generation) = (generation_data[0], generation_data[1], generation_data[2],generation_data[3])
         w_matrix = np.zeros(shape = (n_users,d_reduced,1))
 
@@ -66,7 +66,7 @@ def CLUB_general(T, alpha, alpha_2, n_users, n_products, d_large, embedding_para
         M_matrix = three_D_eye_matrix(n_users, d_large)
         generation_data = generate_data(T, n_users, n_products, d_large, method_users, method_products,
                           n_class_products, n_class_users, context_len,
-                          users_cluster_param, products_cluster_param)
+                          users_cluster_param, products_cluster_param, seed)
         (users_matrix, products, data_generation) = (generation_data[0], generation_data[1], generation_data[2])
         original = products
         w_matrix = np.zeros(shape=(n_users, d_large, 1))

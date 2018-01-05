@@ -12,7 +12,7 @@ def sample_spherical(npoints, ndim=3):
 
 def generate_embedded_data(T, T_historical, n_users, n_products, d, d_reduced, method_users = 'blobs', method_products= 'blobs',
                   n_class_products = None, n_class_users = 4, context_len = 3, context_emb = 5, emb_noise = 0.1,
-                  plot_emb = True, users_cluster_param = 0.05, products_cluster_param = 0.01):
+                  plot_emb = True, users_cluster_param = 0.05, products_cluster_param = 0.01, seed=None):
     '''
     generates the sequence of {i_t,C_t} over time.
 
@@ -50,6 +50,8 @@ def generate_embedded_data(T, T_historical, n_users, n_products, d, d_reduced, m
 
     '''
 
+
+    np.random.seed(seed)
     # Create the users
     if method_users == 'blobs':
         users_params = {"n_samples": n_users, "n_features": d, "centers": sample_spherical(n_class_users, d).T,

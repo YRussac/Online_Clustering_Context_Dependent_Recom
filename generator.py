@@ -10,7 +10,7 @@ def sample_spherical(npoints, ndim=3):
 
 def generate_data(T, n_users, n_products, d, method_users = 'blobs', method_products= 'One-Hot',
                   n_class_products = None, n_class_users = 4, context_len = 3,
-                  users_cluster_param = 0.05, products_cluster_param = 0.01):
+                  users_cluster_param = 0.05, products_cluster_param = 0.01, seed = None):
     '''
     generates the sequence of {i_t,C_t} over time.
 
@@ -42,6 +42,8 @@ def generate_data(T, n_users, n_products, d, method_users = 'blobs', method_prod
 
     '''
 
+
+    np.random.seed(seed)
     # Create the users
     if method_users == 'blobs':
         users_params = {"n_samples": n_users, "n_features": d, "centers": sample_spherical(n_class_users, d).T,
